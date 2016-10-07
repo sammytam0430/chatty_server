@@ -4,9 +4,10 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 const uuid = require('node-uuid');
+require('dotenv').config();
 
 // Set the port to 4000
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 // Create a new express server
 const server = express()
