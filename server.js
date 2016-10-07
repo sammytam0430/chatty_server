@@ -38,7 +38,7 @@ wss.on('connection', (ws) => {
   wss.broadcast(JSON.stringify({
     type: 'incomingNotification',
     id: uuid.v1(),
-    content: 'A user joined the group chat.'
+    content: 'A new user joined the group chat.'
   }))
 
   ws.on('message', (rawMessage) => {
@@ -47,19 +47,16 @@ wss.on('connection', (ws) => {
     switch (message.type) {
       case 'postMessage':
         message.type = 'incomingMessage'
-        message.id = uuid.v1();
-        newMessage = JSON.stringify(message);
-        wss.broadcast(newMessage);
         break;
       case 'postNotification':
         message.type = 'incomingNotification'
-        message.id = uuid.v1();
-        newMessage = JSON.stringify(message);
-        wss.broadcast(newMessage);
         break;
       default:
         throw new Error("Unknown event type " + message.type);
     }
+    message.id = uuid.v1();
+    newMessage = JSON.stringify(message);
+    wss.broadcast(newMessage);
   });
 
   ws.on('close', () => {
