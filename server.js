@@ -61,7 +61,15 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected')
-    wss.broadcast(JSON.stringify({length: wss.clients.length, type: 'onlineUser'}));
+    wss.broadcast(JSON.stringify({
+      type: 'onlineUser',
+      length: wss.clients.length}
+    ));
+    wss.broadcast(JSON.stringify({
+      type: 'incomingNotification',
+      id: uuid.v1(),
+      content: 'A user left the group chat.'
+    }))
   });
 
 });
